@@ -3,109 +3,100 @@ package frontEnd;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.Color;
 import java.awt.*;
 
-import backEnd.SubirArchivos;
+import backEnd.Modificaciones;
+import backEnd.Evaluaciones;
 
 public class Entrega2 extends JFrame {
     
-    public JMenu options;
-    public JMenuItem inicio, evaluaciones, modificar, exit;
+    // Asignando atributos de la clase
+    public Jmenu inicio,evaluaciones, modificar, exit;
     public JMenuBar navbar;
-    //public JLabel intro;
-    public JButton startBtn;
-    public JPanel panel;
+    public JLabel maintext;
     
-    //Constructor
+    private java.util.List<JFrame> openWindow = new java.util.ArrayList<>();     // java.util.List<> Sirve para almacenar objetos de un solo tipo dentro de una lista.
+                                                                                // En este caso, guardaremos datos de tipo JFrame.
+    // Constructor de la clase
     public Entrega2() {
-        
-        // Ventana.
-        this.setTitle("Evualuapp | tu aplicación");
-        this.setSize(620, 350);
+       
+        // Configurando la ventana
+        this.setTitle("Evaluapp | Entrega 2");
+        this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null); // Centrar la ventana
+        this.setLocationRelativeTo(null);
         this.setResizable(false);
-        
-        // Building the items.
-        this.inicio = new JMenuItem("Menú principal");
-        this.evaluaciones = new JMenuItem("Evaluaciones");
-        this.modificar = new JMenuItem("Modificaciones");
-        this.exit = new JMenuItem("Salir");
-        
-        // Building Menu.
-        this.options = new JMenu("Opciones");
-        this.options.add(inicio);
-        this.options.addSeparator();
-        this.options.add(evaluaciones);
-        this.options.add(modificar);
-        this.options.addSeparator();
-        this.options.add(exit);
-        
-        // Building NavBar
+       
+        // Building menu bar items
+        this.inicio = new JMenu("Inicio");
+        this.evaluaciones = new JMenu("Evaluaciones");
+        this.modificar = new JMenu("Modificar";
+        this.exit = new JMenu("Salir");
+       
+        // Building Navbar
         this.navbar = new JMenuBar();
-        this.navbar.add(options);
+        this.navbar.add(inicio);
+        this.navbar.add(evaluaciones);
+        this.navbar.add(modificar);
+        this.navbar.add(exit);
         this.setJMenuBar(navbar);
         this.navbar.setBackground(new Color(250, 250, 250));
         
-        
-        this.startBtn = new JButton("Comenzar");
-        
-        //Estilización del botón
-        this.startBtn.setBounds(260, 110, 100, 30);         //Colocar el botón al centro de la pantalla.
-        this.startBtn.setBackground(new Color(1, 24, 216)); // Color de fondo del botón.
-        this.startBtn.setForeground(Color.WHITE);
-        this.panel = new JPanel();
-        
-        this.panel.setLayout(null);
-        
-        this.panel.add(startBtn);
-        this.add(panel);
-        
-        // BACKEND
-        /*
-        codigo subir archivo
-        leer archivo
-        mostrar archivo
-        opcion de agregarlo o no a la evaluacion
-        
-        */
-        
-        // FRONTEND
-        /*
-            el estilazo
-        */
-        
-        // Cerrar la aplicacion
-        this.exit.addActionListener(new ActionListener(){
+        // Configurando el texto principal
+        this.maintext = new JLabel("<html>Bienvenido e Evaluapp. <br> Por favor selecciona una de las opciones de arriba para continuar.</html>", SwingConstants.CENTER);
+        this.maintext.setVerticalAlignment(SwingConstants.CENTER);
+        this.maintext.setHorizontalAlignment(SwingConstants.CENTER);
+        this.add(maintext);
+       
+        // Crear Event Listener para los menús
+       
+        // MouseListener es para hacer click directamente en el menú sin necesidad de desplegar opciones.
+       
+        /**
+         * Se debe utilizar esta función, ya que el objetoo JMenu no acepta ActionListener, por eso recurrimos a esta función.
+         */
+        this.evaluaciones.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                Evaluaciones pruebas = new Evaluaciones();
+                pruebas.setVisible(true);
+                pruebas.setSIze(700, 400);
+                openWindow.add(pruebas); //Al abrir el JFrame, lo añadimos a la lista creada anteriormente.
+            }
+        });
+       
+        this.modificar.addMouseListener(new java.awt.event.MouseAdapter() {
+           @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                Modificaciones mod = new Modificaciones();
+                mod.setVisible(true);
+                mod.setSize(700, 400);
+                openWIndow.add(mod);  //Al abrir el JFrame, lo añadimos a la lista creada anteriormente.
+            }
+        });
+       
+        this.inicio.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                for(JFrame ventana : openWindow) { // Esto, es una forma abreviada de decir: Para cada objeto ventana de tipo JFrame dentro de la lista, haz lo siguiente.
+                    ventana.dispose(); // Esta linea, hace que cada ventana dentro de la lista se cierre.
+                }
+                openWindow.dispose();
+            }
+        });
+        
+        this.exit.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                JOptionPane.showMessageDialog(null, "Está a punto de cerrar la aplicación.", "¡Atención!", JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
-            }
+            }   
         });
-        
-        // Abrir la segunda ventana
-        this.startBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SubirArchivos ventana = new SubirArchivos();
-                ventana.setTitle("Seleccione los archivos");
-                ventana.setVisible(true);
-                ventana.setSize(700, 400);
-            }
-        });
-        
-        this.modificar.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SubirArchivos ventana = new SubirArchivos();
-                ventana.setTitle("Seleccione los archivos");
-                ventana.setVisible(true);
-                ventana.setSize(700, 400);
-            }
-        });
-        
     }
-    
+   
     public static void main(String[] args) {
         Entrega2 app = new Entrega2();
         app.setVisible(true);
