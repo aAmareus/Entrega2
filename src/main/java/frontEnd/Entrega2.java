@@ -5,16 +5,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.Color;
 import java.awt.*;
+import java.io.*;
+import javax.swing.filechooser.FileFilter;
+import java.util.*;
 
 import backEnd.Modificaciones;
 import backEnd.Evaluaciones;
+import backEnd.WinSubirArchivo;
 
 public class Entrega2 extends JFrame {
     
     // Asignando atributos de la clase
-    public Jmenu inicio,evaluaciones, modificar, exit;
+    public JMenu inicio, evaluaciones, preguntas, modificar, exit;
     public JMenuBar navbar;
     public JLabel maintext;
     
@@ -33,13 +36,15 @@ public class Entrega2 extends JFrame {
         // Building menu bar items
         this.inicio = new JMenu("Inicio");
         this.evaluaciones = new JMenu("Evaluaciones");
-        this.modificar = new JMenu("Modificar";
+        this.preguntas = new JMenu("Preguntas");
+        this.modificar = new JMenu("Modificar");
         this.exit = new JMenu("Salir");
        
         // Building Navbar
         this.navbar = new JMenuBar();
         this.navbar.add(inicio);
         this.navbar.add(evaluaciones);
+        this.navbar.add(preguntas);
         this.navbar.add(modificar);
         this.navbar.add(exit);
         this.setJMenuBar(navbar);
@@ -63,7 +68,7 @@ public class Entrega2 extends JFrame {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 Evaluaciones pruebas = new Evaluaciones();
                 pruebas.setVisible(true);
-                pruebas.setSIze(700, 400);
+                pruebas.setSize(700, 400);
                 openWindow.add(pruebas); //Al abrir el JFrame, lo añadimos a la lista creada anteriormente.
             }
         });
@@ -74,17 +79,34 @@ public class Entrega2 extends JFrame {
                 Modificaciones mod = new Modificaciones();
                 mod.setVisible(true);
                 mod.setSize(700, 400);
-                openWIndow.add(mod);  //Al abrir el JFrame, lo añadimos a la lista creada anteriormente.
+                openWindow.add(mod);  //Al abrir el JFrame, lo añadimos a la lista creada anteriormente.
             }
         });
        
+        this.preguntas.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                WinSubirArchivo upFile = new WinSubirArchivo();
+                upFile.setVisible(true);
+                upFile.setSize(900, 600);
+                openWindow.add(upFile);
+            }
+        });
+        
+        
+        /**
+         
+         VERIFICAR PORQUE NO SE MUESTRA EN PANTALLA
+         * 
+         */
+        
         this.inicio.addMouseListener(new java.awt.event.MouseAdapter(){
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 for(JFrame ventana : openWindow) { // Esto, es una forma abreviada de decir: Para cada objeto ventana de tipo JFrame dentro de la lista, haz lo siguiente.
                     ventana.dispose(); // Esta linea, hace que cada ventana dentro de la lista se cierre.
                 }
-                openWindow.dispose();
+                openWindow.clear();
             }
         });
         
